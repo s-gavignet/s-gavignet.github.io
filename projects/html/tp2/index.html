@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Sébastien Gavignet - TP2</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+
+  <body>
+    <h3 align="center"><span id="seconds"></span> secondes</h3>
+  </body>
+  <script>
+    window.addEventListener("DOMContentLoaded", (event) => {
+      var seconds = 10;
+      document.getElementById('seconds').innerHTML = seconds.toString();
+      var time = setInterval(updateTime, 1000);
+      
+      function updateTime() {
+        seconds--;
+        document.getElementById('seconds').innerHTML = seconds.toString();
+        if (seconds <= 0) clearInterval(time);
+      }
+    });
+  </script>
+</html>
