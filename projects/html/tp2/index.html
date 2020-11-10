@@ -8,17 +8,50 @@
 
   <body>
     <h3 align="center"><span id="seconds"></span> secondes</h3>
+    <canvas id="canvas" width="800" height="600"></canvas>
   </body>
   <script>
     window.addEventListener("DOMContentLoaded", (event) => {
-      var seconds = 10;
+      let seconds = 10;
       document.getElementById('seconds').innerHTML = seconds.toString();
-      var time = setInterval(updateTime, 1000);
+      let time = setInterval(updateTime, 1000);
       
       function updateTime() {
         seconds--;
         document.getElementById('seconds').innerHTML = seconds.toString();
         if (seconds <= 0) clearInterval(time);
+      }
+
+      
+      let canvas = document.getElementById('canvas');
+      let ctx = canvas.getContext('2d');
+      ctx.fillStyle = 'red';
+      
+      for (let i=0; i < 10; i++) {
+        createSquareAnimation(4000 + (i*1000));
+      }
+
+      function createSquareAnimation(timeout) {
+        let x = 0;
+        ctx.fillRect(x, 10, 80, 80);
+
+        setTimeout(() => {
+          let time = setInterval(updateSquare, 100);
+          let goingRight = true;
+
+          function updateSquare() {
+            ctx.clearRect(x, 10, 80, 80);
+            
+            if (goingRight) {
+              if ((100 + x) < canvas.width) x += 10;
+              else goingRight = false;
+            } else {
+              if (x > 0) x -= 10;
+              else goingRight = true;
+            }
+            ctx.fillRect(x, 10, 80, 80);
+          }
+        }, timeout);
       }
     });
   </script>
