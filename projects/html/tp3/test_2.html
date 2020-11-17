@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Sébastien Gavignet - TP3</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+
+  <body>
+    <div id="square" style="width: 80px; height: 80px; left: 400px; position: relative;"></div>
+  </body>
+  <script>
+    window.addEventListener("DOMContentLoaded", (event) => {      
+      let square = document.getElementById('square');
+      square.style.backgroundColor = '#ff0000';
+      square.style.left = '800px';
+
+      let left = 800;
+      let timer;
+      let lastFrame;
+      timer = setInterval(() => {
+        pausecomp(20);
+        square.style.left = (left -= getNumberOfPixels(new Date(), lastFrame)) + "px";
+        if (left <= 0) {
+          clearInterval(timer);
+        }
+        lastFrame = new Date();
+      }, 16);
+
+      function pausecomp(millis) {
+        var date = new Date();
+        var curDate = null;
+        do {
+            curDate = new Date();
+        } while (curDate - date < millis);
+      }
+
+      function getNumberOfPixels(actualDate, lastDate) {
+        if (lastDate !== undefined) {
+          return (actualDate.getMilliseconds() - lastDate.getMilliseconds()) * 0.5;
+        }
+        return 10;
+      }
+    });
+  </script>
+</html>

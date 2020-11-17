@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Sébastien Gavignet - TP3</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+
+  <body>
+    <div id="square" style="width: 80px; height: 80px; left: 400px; position: relative;"></div>
+  </body>
+  <script>
+    window.addEventListener("DOMContentLoaded", (event) => {
+      var start = null;
+      let square = document.getElementById('square');
+      square.style.backgroundColor = '#ff0000';
+      square.style.left = '0px';
+
+      function step(timestamp) {
+        var progress;
+        if (start === null) start = timestamp;
+        progress = timestamp - start;
+        square.style.left = progress +"px";
+        if (progress < 800) {
+          requestAnimationFrame(step, square);
+          var deltaT = now - lastFrame;
+          // do not render frame when deltaT is too high
+          if (deltaT < 160) running = render(deltaT);
+        }
+      }
+
+      requestAnimationFrame(step, square);
+      var deltaT = now - lastFrame;
+      // do not render frame when deltaT is too high
+      if (deltaT < 160) running = render(deltaT);
+    });
+  </script>
+</html>

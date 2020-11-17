@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Sébastien Gavignet - TP3</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+
+  <body>
+    <canvas id="coin" style="width: 800px; height: 800px; left: 600px; position: relative;"></canvas>
+  </body>
+  <script>
+    window.addEventListener("DOMContentLoaded", (event) => {
+      let coin = document.getElementById('coin');
+      let ctx = coin.getContext('2d');
+      
+      var img = new Image();
+      img.src = 'images/coin-sprite.png';
+      let index = 0;
+      let coinWidth = Math.round(img.width / 10);
+      let coinHeight = img.height;
+      
+      function updateGame() {
+        index++;
+        if (index > 9) index = 0;
+      }
+
+      function drawGame() {
+        ctx.clearRect(0, 0, 800, 800);
+        ctx.drawImage(img, coinWidth*index, 0, coinWidth, coinHeight, 0, 0, coinWidth, coinHeight);
+      }
+      function mainloop() {
+        updateGame();
+        drawGame();
+      }
+      
+      let animFrame = window.requestAnimationFrame ||
+              window.webkitRequestAnimationFrame   ||
+              window.mozRequestAnimationFrame      ||
+              window.oRequestAnimationFrame        ||
+              window.msRequestAnimationFrame       ||
+              null;
+
+      function recursiveAnim() {
+          mainloop();
+          animFrame(recursiveAnim);
+      }
+      
+      animFrame(recursiveAnim);
+    });
+  </script>
+</html>
