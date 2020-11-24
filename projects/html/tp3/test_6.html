@@ -7,7 +7,7 @@
   </head>
 
   <body>
-    <canvas id="hero" style="width: 800px; height: 800px; left: 600px; position: relative; border: 1px solid #000"></canvas>
+    <canvas id="hero" style="width: 800px; height: 800px; left: 600px; position: relative;"></canvas>
   </body>
   <script>
     window.addEventListener("DOMContentLoaded", (event) => {
@@ -18,15 +18,11 @@
         let keyName = e.key;
 
         doAnimation = true;
-        key = true;
         if (keyName === 'ArrowLeft') directionIndex = 0;
         else if (keyName === 'ArrowRight') directionIndex = 1;
         else if (keyName === 'ArrowDown') directionIndex = 2;
         else if (keyName === 'ArrowUp') directionIndex = 3;
-        else {
-          doAnimation = false;
-          key = false;
-        }
+        else doAnimation = false;
       }, false);
 
       window.addEventListener("keyup", (e) => {
@@ -36,21 +32,13 @@
         if (keyName === 'ArrowLeft' || keyName === 'ArrowRight' || keyName === 'ArrowDown' || keyName === 'ArrowUp') doAnimation = false;
       }, false);
 
-      hero.addEventListener("mousedown", (e) => {
-        e.preventDefault();
-        x = (e.clientX - 600)*ratio*1.2;
-        y = e.clientY*ratio*0.6;
-      }, false);
-
       let ctx = hero.getContext('2d');
       
       var img = new Image();
       img.src = 'images/hero_walk.png';
       let walkIndex = 0, directionIndex = 2;
       let doAnimation = false;
-      let key = false;
       let x = 0, y = 0;
-      let lastX = 0, lastY = 0;
 
       var hRatio = hero.width / img.width;
       var vRatio = hero.height / img.height;
@@ -58,59 +46,24 @@
 
       let heroWidth = Math.round(img.width / 4);
       let heroHeight = Math.round(img.height / 4);
-
-      function moveRightOrLeft() {
-        doAnimation = true;
-        if (lastX > x) directionIndex = 0;
-        else directionIndex = 1;
-        animate();
-        if (directionIndex === 0 && lastX > 0) lastX -= 10;
-        if (directionIndex === 1 && (lastX + heroWidth*ratio*1.2) < hero.width) lastX += 10;
-      }
-
-      function moveTopOrBottom() {
-        doAnimation = true;
-        if (lastY < y) directionIndex = 2;
-        else directionIndex = 3;
-        animate();
-        if (directionIndex === 2 && (lastY + heroHeight*ratio*1.2) < hero.height) lastY += 10;
-        if (directionIndex === 3 && lastY > 0) lastY -= 10;
-      }
-
-      function animate() {
+      
+      function updateGame() {
         if (doAnimation) {
           walkIndex++;
           if (walkIndex > 3) walkIndex = 0;    
         } else walkIndex = 0;
-      }
-      
-      function updateGame() {
-        if (!key) {
-          if (lastX !== x) moveRightOrLeft();
-          else if (lastY !== y) moveTopOrBottom();
-        }
-        else {
-          animate();
-          if (doAnimation) {
-            if (directionIndex === 0 && lastX > 0) lastX -= 10;
-            if (directionIndex === 1 && (lastX + heroWidth*ratio*1.2) < hero.width) lastX += 10;
-            if (directionIndex === 2 && (lastY + heroHeight*ratio*1.2) < hero.height) lastY += 10;
-            if (directionIndex === 3 && lastY > 0) lastY -= 10;
-          }
-        }
-        if (Math.abs(lastX - x) < 10) {
-          lastX = x;
-          doAnimation = false;
-        }
-        if (Math.abs(lastY - y) < 10) {
-          lastY = y;
-          doAnimation = false;
+        
+        if (doAnimation) {
+          if (directionIndex === 0 && x > 0) x -= 10;
+          if (directionIndex === 1 && (x + heroWidth*ratio*1.2) < hero.width) x += 10;
+          if (directionIndex === 2 && (y + heroHeight*ratio*1.2) < hero.height) y += 10;
+          if (directionIndex === 3 && y > 0) y -= 10;
         }
       }
 
       function drawGame() {
         ctx.clearRect(0, 0, hero.width, hero.height);
-        ctx.drawImage(img, heroWidth*walkIndex, heroHeight*directionIndex, heroWidth, heroHeight, lastX, lastY, heroWidth*ratio*1.2, heroHeight*ratio);
+        ctx.drawImage(img, heroWidth*walkIndex, heroHeight*directionIndex, heroWidth, heroHeight, x, y, heroWidth*ratio*1.2, heroHeight*ratio);
       }
       
       function mainloop() {
