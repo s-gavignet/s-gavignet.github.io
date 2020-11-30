@@ -4,7 +4,7 @@ this.addEventListener('install', function(event) {
       return cache.addAll([
           '/projects/js/pwa-enssat/',
           '/projects/js/pwa-enssat/index.html',
-          '/projects/js/pwa-enssat/serviceworker.js'
+          '/projects/js/pwa-enssat/serviceworker.js',
       ]);
     })
   );
