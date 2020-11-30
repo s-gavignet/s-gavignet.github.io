@@ -14,7 +14,7 @@
   <script>
     window.addEventListener("DOMContentLoaded", (event) => {
       if ('serviceWorker' in navigator) {
-        navigator.serviceWorker.register('/pwa-enssat/serviceworker.js', { scope: '/pwa-enssat/' }).then(function(reg) {
+        navigator.serviceWorker.register('/projects/js/pwa-enssat/serviceworker.js', { scope: '/projects/js/pwa-enssat/' }).then(function(reg) {
           // registration worked
           console.log('Registration succeeded. Scope is ' + reg.scope);
         }).catch(function(error) {
