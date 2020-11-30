@@ -17,6 +17,9 @@
         navigator.serviceWorker.register('/projects/js/pwa-enssat/serviceworker.js', { scope: '/projects/js/pwa-enssat/' }).then(function(reg) {
           // registration worked
           console.log('Registration succeeded. Scope is ' + reg.scope);
+          let url = 'https://cors-anywhere.herokuapp.com/https://planning.univ-rennes1.fr/jsp/custom/modules/plannings/9EYlGR3a.shu';
+          fetch(url)
+            .then(res => console.log(res));
         }).catch(function(error) {
           // registration failed
           console.log('Registration failed with ' + error);
