@@ -8,10 +8,18 @@
 
   <body>
     <canvas id="hero" style="width: 800px; height: 800px; left: 600px; position: relative; border: 1px solid #000"></canvas>
+    <div align="center" style="position: relative;">
+      <input type="radio" name="player" value="1" checked>Player 1
+      <input type="radio" name="player" value="2">Player 2
+    </div>
   </body>
   <script>
+    class Player {
+
+    }
+
     window.addEventListener("DOMContentLoaded", (event) => {
-      let hero = document.getElementById('hero');
+      let canvas = document.getElementById('hero');
 
       window.addEventListener("keydown", (e) => {
         e.preventDefault();
@@ -36,13 +44,13 @@
         if (keyName === 'ArrowLeft' || keyName === 'ArrowRight' || keyName === 'ArrowDown' || keyName === 'ArrowUp') doAnimation = false;
       }, false);
 
-      hero.addEventListener("mousedown", (e) => {
+      canvas.addEventListener("mousedown", (e) => {
         e.preventDefault();
         x = (e.clientX - 600)*ratio*1.2;
         y = e.clientY*ratio*0.6;
       }, false);
 
-      let ctx = hero.getContext('2d');
+      let ctx = canvas.getContext('2d');
       
       var img = new Image();
       img.src = 'images/hero_walk.png';
@@ -52,8 +60,8 @@
       let x = 0, y = 0;
       let lastX = 0, lastY = 0;
 
-      var hRatio = hero.width / img.width;
-      var vRatio = hero.height / img.height;
+      var hRatio = canvas.width / img.width;
+      var vRatio = canvas.height / img.height;
       var ratio = Math.min(hRatio, vRatio);
 
       let heroWidth = Math.round(img.width / 4);
@@ -65,7 +73,7 @@
         else directionIndex = 1;
         animate();
         if (directionIndex === 0 && lastX > 0) lastX -= 10;
-        if (directionIndex === 1 && (lastX + heroWidth*ratio*1.2) < hero.width) lastX += 10;
+        if (directionIndex === 1 && (lastX + heroWidth*ratio*1.2) < canvas.width) lastX += 10;
       }
 
       function moveTopOrBottom() {
@@ -73,7 +81,7 @@
         if (lastY < y) directionIndex = 2;
         else directionIndex = 3;
         animate();
-        if (directionIndex === 2 && (lastY + heroHeight*ratio*1.2) < hero.height) lastY += 10;
+        if (directionIndex === 2 && (lastY + heroHeight*ratio*1.2) < canvas.height) lastY += 10;
         if (directionIndex === 3 && lastY > 0) lastY -= 10;
       }
 
@@ -88,16 +96,16 @@
         if (!key) {
           if (lastX !== x) moveRightOrLeft();
           else if (lastY !== y) moveTopOrBottom();
-        }
-        else {
+        } else {
           animate();
           if (doAnimation) {
             if (directionIndex === 0 && lastX > 0) lastX -= 10;
-            if (directionIndex === 1 && (lastX + heroWidth*ratio*1.2) < hero.width) lastX += 10;
-            if (directionIndex === 2 && (lastY + heroHeight*ratio*1.2) < hero.height) lastY += 10;
+            if (directionIndex === 1 && (lastX + heroWidth*ratio*1.2) < canvas.width) lastX += 10;
+            if (directionIndex === 2 && (lastY + heroHeight*ratio*1.2) < canvas.height) lastY += 10;
             if (directionIndex === 3 && lastY > 0) lastY -= 10;
           }
         }
+        
         if (Math.abs(lastX - x) < 10) {
           lastX = x;
           doAnimation = false;
@@ -109,11 +117,12 @@
       }
 
       function drawGame() {
-        ctx.clearRect(0, 0, hero.width, hero.height);
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.drawImage(img, heroWidth*walkIndex, heroHeight*directionIndex, heroWidth, heroHeight, lastX, lastY, heroWidth*ratio*1.2, heroHeight*ratio);
       }
       
       function mainloop() {
+        console.log(document.forms);
         updateGame();
         drawGame();
       }
